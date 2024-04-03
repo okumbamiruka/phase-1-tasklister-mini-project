@@ -1,34 +1,26 @@
-import TaskList from "./TaskList";
-
-// OO solution
 document.addEventListener("DOMContentLoaded", () => {
-  // initialize taskList class
-  const taskList = new TaskList();
-  //grab all the necessary DOM elements
+  const form = document.querySelector("#create-task-form");
+  const tasks = document.querySelector("#tasks");
 
-  //form and relevant input fields
-  const newTaskForm = document.getElementById("create-task-form");
-  const newTaskDescription = document.getElementById("new-task-description");
-  const newTaskPriority = document.getElementById("new-task-priority");
-
-  //ul where new tasks will live on the DOM
-  const taskUl = document.getElementById("tasks");
-
-  const renderApp = () => (taskUl.innerHTML = taskList.renderTasks());
-  //attach event listeners
-
-  newTaskForm.addEventListener("submit", (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    taskList.createNewTask(newTaskDescription.value);
-    // reset form
-    e.target.reset();
-    renderApp();
-  });
+    const taskDescription = document.querySelector("#new-task-description");
+    const taskValue = taskDescription.value;
 
-  taskUl.addEventListener("click", (e) => {
-    if (e.target.nodeName === "BUTTON") {
-      taskList.deleteTask(e.target.dataset.description);
-      renderApp();
+    if (taskValue === "") {
+      alert("Please enter a task");
+    }else{
+      const taskList = document.createElement("li")
+      const deleteButton = document.createElement("button")
+      taskList.textContent = taskValue
+      deleteButton.textContent = "X"
+      tasks.appendChild(taskList)
+      taskList.appendChild(deleteButton)
+
+      deleteButton.addEventListener("click",() =>{
+        taskList.remove()
+      })
     }
-  });
-});
+    form.reset();
+  })
+})
